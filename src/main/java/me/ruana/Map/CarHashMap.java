@@ -20,7 +20,6 @@ public class CarHashMap implements CarMap {
             size++;
         }
     }
-
     private boolean add(CarOwner carOwner, Car car, Entry[] dst) {
         int position = getElementPosition(carOwner, dst.length);
         if (dst[position] == null) {

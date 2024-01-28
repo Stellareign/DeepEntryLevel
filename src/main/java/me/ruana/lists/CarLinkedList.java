@@ -2,11 +2,13 @@ package me.ruana.lists;
 
 import me.ruana.Car;
 import me.ruana.CarCollections;
+import me.ruana.queue.CarQueue;
 import org.w3c.dom.Node;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class CarLinkedList implements CarList {
+public class CarLinkedList implements CarList, CarQueue {
     private Node first;
     private Node last;
     private int size = 0;
@@ -147,6 +149,29 @@ public class CarLinkedList implements CarList {
                 return car;
             }
         };
+    }
+// *************************** FOR QUEUE ****************************
+    @Override
+    public Car peek() {
+        if (size > 0) {
+            return get(0);
+        }
+        else throw new NoSuchElementException();
+    }
+
+//    @Override
+//    public Car peek() {
+//       return size > 0 ? get(0) : null;
+//
+//    }
+
+    @Override
+    public Car poll() {
+        if (size > 0) {
+            Car car = get(0);
+            removeAt(0);
+            return car;
+        } else throw new NoSuchElementException();
     }
 
     private static class Node {
