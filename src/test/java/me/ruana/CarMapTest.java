@@ -18,7 +18,7 @@ public class CarMapTest {
 
     @Before
     public void setUp() throws Exception {
-        carMap = new CarHashMap();
+        carMap = new CarHashMap<>();
 
     }
 

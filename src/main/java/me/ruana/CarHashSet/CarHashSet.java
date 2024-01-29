@@ -5,13 +5,13 @@ import me.ruana.CarCollections;
 
 import java.util.Iterator;
 
-public class CarHashSet implements CarSet, CarCollections {
+public class CarHashSet<T> implements CarSet<T>, CarCollections<T> {
     private static final int INITIAL_CAPACITY = 16;
     private int size = 0;
     private Entry[] array = new Entry[INITIAL_CAPACITY];
 
     @Override
-    public boolean add(Car car) {
+    public boolean add(T car) {
         if (size >= array.length * 0.75) {
             increaseArray();
         }
@@ -23,7 +23,7 @@ public class CarHashSet implements CarSet, CarCollections {
     }
 
 
-    private boolean add(Car car, Entry[] dst) {
+    private boolean add(T car, Entry[] dst) {
         int position = getElementPosition(car, dst.length);
         if (dst[position] == null) {
             Entry entry = new Entry(car, null);
@@ -48,7 +48,7 @@ public class CarHashSet implements CarSet, CarCollections {
 
 
     @Override
-    public boolean remove(Car car) {
+    public boolean remove(T car) {
         int position = getElementPosition(car, array.length);
         if (array[position] == null) {
             return false;
@@ -74,7 +74,7 @@ public class CarHashSet implements CarSet, CarCollections {
     }
 
     @Override
-    public boolean contains(Car car) {
+    public boolean contains(T car) {
         boolean isExist = false;
         int position = getElementPosition(car, array.length);
         if (array[position] == null) {
@@ -108,7 +108,7 @@ public class CarHashSet implements CarSet, CarCollections {
 
     }
 
-    private int getElementPosition(Car car, int arrayLength) {
+    private int getElementPosition(T car, int arrayLength) {
         return Math.abs(car.hashCode() % arrayLength);
     }
 
@@ -117,7 +117,7 @@ public class CarHashSet implements CarSet, CarCollections {
         for (Entry entry : array) {
             Entry existedElement = entry;
             while (existedElement != null) {
-                add(existedElement.value, newArray);
+                add((T)existedElement.value, newArray);
                 existedElement = existedElement.next;
             }
         }
@@ -125,8 +125,8 @@ public class CarHashSet implements CarSet, CarCollections {
     }
 
     @Override
-    public Iterator<Car> iterator() {
-        return new Iterator<Car>() {
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
             int index = 0;
             int arrayIndex = 0;
             Entry entry;
@@ -137,16 +137,16 @@ public class CarHashSet implements CarSet, CarCollections {
             }
 
             @Override
-            public Car next() {
-                while ((array[arrayIndex] == null)){
-                arrayIndex++;
-            }
+            public T next() {
+                while ((array[arrayIndex] == null)) {
+                    arrayIndex++;
+                }
                 if (entry == null) {
                     entry = array[arrayIndex];
                 }
-                Car result = entry.value;
+                T result = (T)entry.value;
                 entry = entry.next;
-                if (entry == null){
+                if (entry == null) {
                     arrayIndex++;
                 }
                 index++;
@@ -156,11 +156,11 @@ public class CarHashSet implements CarSet, CarCollections {
     }
 
     //***************************************************************************************
-    private static class Entry {
-        private Car value;
+    private static class Entry <T> {
+        private T value;
         private Entry next;
 
-        public Entry(Car value, Entry next) {
+        public Entry(T value, Entry next) {
             this.value = value;
             this.next = next;
         }

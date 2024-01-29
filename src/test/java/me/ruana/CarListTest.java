@@ -8,11 +8,11 @@ import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CarListTest {
-    private CarList carList;
+    private CarList<Car> carList;
 
     @Before
     public void setUp() throws Exception {
-        carList = new CarArrayList();
+        carList = new CarArrayList<>();
 
         for (int i = 0; i < 100; i++) {
             carList.add(new Car("Brand" + i, i));

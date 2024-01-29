@@ -8,28 +8,28 @@ import org.w3c.dom.Node;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CarLinkedList implements CarList, CarQueue {
+public class CarLinkedList<T> implements CarList<T>, CarQueue<T> {
     private Node first;
     private Node last;
     private int size = 0;
 
     @Override
-    public Car get(int index) {
-        return getNode(index).value;
+    public T get(int index) {
+        return (T)getNode(index).value;
     }
 
     @Override
-    public boolean add(Car car) {
+    public boolean add(T t) {
         if (size == 0) {
-//            Node node = new Node(null, car, null);
+//            Node node = new Node(null, t, null);
 //            first = node;
 //            last = node;
-            first = new Node(null, car, null);
+            first = new Node(null, t, null);
             last = first;
 
         } else {
             Node secondLast = last;
-            last = new Node(secondLast, car, null);
+            last = new Node(secondLast, t, null);
             secondLast.next = last;
         }
         size++;
@@ -37,16 +37,16 @@ public class CarLinkedList implements CarList, CarQueue {
     }
 
     @Override
-    public boolean add(Car car, int index) {
+    public boolean add(T t, int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
         if (index == size) {
-            return add(car);
+            return add(t);
         }
         Node nodeNext = getNode(index);
         Node nodePrivious = nodeNext.previous;
-        Node newNode = new Node(nodePrivious, car, nodeNext);
+        Node newNode = new Node(nodePrivious, t, nodeNext);
         nodeNext.previous = newNode;
         if (nodePrivious != null) {
             nodePrivious.next = newNode;
@@ -69,10 +69,10 @@ public class CarLinkedList implements CarList, CarQueue {
     }
 
     @Override
-    public boolean remove(Car car) {
+    public boolean remove(T t) {
         Node node = first;
         for (int i = 0; i < size; i++) {
-            if (node.value.equals(car)) {
+            if (node.value.equals(t)) {
                 return removeAt(i);
             }
             node = node.next;
@@ -119,10 +119,10 @@ public class CarLinkedList implements CarList, CarQueue {
     }
 
     @Override
-    public boolean contains(Car car) {
+    public boolean contains(T t) {
         Node node = first;
         for (int i = 0; i < size; i++) {
-            if (node.value.equals(car)) {
+            if (node.value.equals(t)) {
                 return true;
             }
             node = node.next;
@@ -131,8 +131,8 @@ public class CarLinkedList implements CarList, CarQueue {
     }
 
     @Override
-    public Iterator<Car> iterator() {
-        return new Iterator<Car>() {
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
             private CarLinkedList.Node node = first;
 
             @Override
@@ -143,20 +143,22 @@ public class CarLinkedList implements CarList, CarQueue {
             }
 
             @Override
-            public Car next() {
-                Car car = node.value;
+            public T next() {
+                T t = (T) node.value;
                 node = node.next;
-                return car;
+                return t;
             }
         };
     }
-// *************************** FOR QUEUE ****************************
+
+    // *************************** FOR QUEUE ****************************
     @Override
-    public Car peek() {
+    public T peek() {
         if (size > 0) {
-            return get(0);
+            return (T) get(0);
+        } else {
+            throw new NoSuchElementException();
         }
-        else throw new NoSuchElementException();
     }
 
 //    @Override
@@ -166,20 +168,20 @@ public class CarLinkedList implements CarList, CarQueue {
 //    }
 
     @Override
-    public Car poll() {
+    public T poll() {
         if (size > 0) {
-            Car car = get(0);
+            T t = (T) get(0);
             removeAt(0);
-            return car;
+            return t;
         } else throw new NoSuchElementException();
     }
 
-    private static class Node {
+    private static class Node<V> {
         private Node previous;
-        private Car value;
+        private V value;
         private Node next;
 
-        public Node(Node previous, Car value, Node next) {
+        public Node(Node previous, V value, Node next) {
             this.previous = previous;
             this.value = value;
             this.next = next;

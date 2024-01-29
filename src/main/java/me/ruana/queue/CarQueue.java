@@ -3,9 +3,9 @@ package me.ruana.queue;
 import me.ruana.Car;
 import me.ruana.CarCollections;
 
-public interface CarQueue extends CarCollections {
-    boolean add(Car car);
-    Car peek();
+public interface CarQueue <T> extends CarCollections <T>{
+    boolean add(T car);
+    T peek();
 
-    Car poll();
+    T poll();
 }

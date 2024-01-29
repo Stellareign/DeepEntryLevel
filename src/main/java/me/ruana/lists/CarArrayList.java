@@ -7,26 +7,26 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
-public class CarArrayList implements CarList {
-    private Car[] array = new Car[10];
+public class CarArrayList <T> implements CarList <T>{
+    private Object[] array = new Object[10];
     private int size = 0;
 
     @Override
-    public Car get(int index) {
+    public T get(int index) {
         checkIndex(index);
-        return array[index];
+        return (T)array[index];
     }
 
     @Override
-    public boolean add(Car car) {
+    public boolean add(T t) {
         increaseArray();
-        array[size] = car;
+        array[size] = t;
         size++;
         return true;
     }
 
     @Override
-    public boolean add(Car car, int index) {
+    public boolean add(T t, int index) {
         if (index < 0 || index > size) { // здесь индекс может быть равен размеру
             throw new IndexOutOfBoundsException();
         }
@@ -37,14 +37,14 @@ public class CarArrayList implements CarList {
 //        for (int i = size; i > index; i--) {
 //            array[i] = array[i - 1];
 //        }
-        array[index] = car; // и вставка значения по индексу
+        array[index] = t; // и вставка значения по индексу
         return true;
     }
 
     @Override
-    public boolean remove(Car car) {
+    public boolean remove(T t) {
         for (int i = 0; i < size; i++) {
-            if (array[i].equals(car)) {
+            if (array[i].equals(t)) {
                 return removeAt(i);
             }
         }
@@ -66,23 +66,23 @@ public class CarArrayList implements CarList {
 
     @Override
     public void clear() {
-        array = new Car[10];
+        array = new Object[10];
         size = 0;
     }
 
     @Override
-    public boolean contains(Car car) {
+    public boolean contains(T t) {
         boolean isExist = false;
         for (int i = 0; i < size; i++) {
-            if (array[i].equals(car)) {
+            if (array[i].equals(t)) {
                isExist= true;
             }
         } return isExist;
     }
 
     @Override
-    public Iterator<Car> iterator() {
-        return new Iterator<Car>() {
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
             int index = 0;
             @Override
             public boolean hasNext() {
@@ -90,8 +90,8 @@ public class CarArrayList implements CarList {
             }
 
             @Override
-            public Car next() {
-                return array[index++];
+            public T next() {
+                return (T)array[index++];
             }
         };
     }

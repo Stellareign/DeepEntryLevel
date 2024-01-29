@@ -8,14 +8,14 @@ import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CarCollectionsTest {
-    private CarCollections collections;
+public class CarCollectionsTest  {
+    private CarCollections<Car> collections;
 
     @Before
     public void setUp() throws Exception {
 
 //        collections = new CarLinkedList();
-        collections = new CarHashSet();
+        collections = new CarHashSet<> ();
         for (int i = 0; i < 100; i++) {
             collections.add(new Car("Brand" + i, i));
         }
